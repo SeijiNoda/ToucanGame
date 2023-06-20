@@ -21,7 +21,6 @@ public class BlueEnemy extends Enemy{
 	
 	private void loadImages(String imagesDirectory) {
 		ImageIcon ii;
-		System.out.println(imagesDirectory);
 		// sprite for when enemy is facing East
 		ii = new ImageIcon(imagesDirectory + "blue_0.png");
 		this.imagesRight[0] = ii.getImage();
