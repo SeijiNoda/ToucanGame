@@ -152,11 +152,11 @@ public class Player {
 		this.currentHP -= howMuch;
 	}
 	
-	public boolean checkCollisions(List<Interactable> gameObjects) {
+	public Interactable checkCollisions(List<Interactable> gameObjects) {
 		for (Interactable object: gameObjects) {
-			if (object.checkCollision(this.x, this.y, this.width, this.height)) return true;
+			if (object.checkCollision(this.x, this.y, this.width, this.height)) return object;
 		}
 		
-		return false;
+		return null;
 	}
 }

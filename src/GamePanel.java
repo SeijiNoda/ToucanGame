@@ -141,7 +141,8 @@ public class GamePanel extends JPanel implements ActionListener {
 	
 	public void checkCollisions() {		
 		// checks if player collided with any enemy
-		if (player.checkCollisions(this.enemyList)) {
+		Interactable obj = player.checkCollisions(this.enemyList);
+		if (obj != null) {
 			player.loseHP(1);
 			if (player.getCurrentHP() <= 0) running = false;
 			score -= 100 * missMultiplier;
