@@ -40,6 +40,8 @@ public class GamePanel extends JPanel implements ActionListener {
 	
 	Timer timer;
 	Random random;
+
+    static int redEnemyCounter = 0;
 	
 	GamePanel() {
 		random = new Random();
@@ -82,6 +84,13 @@ public class GamePanel extends JPanel implements ActionListener {
 			gameOver(g);
 			return;
 		}
+
+        if (score / 500 > redEnemyCounter) {
+            Enemy enemy = new RedEnemy(0, 5 * UNIT_SIZE);
+		    this.enemyList.add(enemy);
+            
+            redEnemyCounter++;
+        }
 		
 		// draws Game grid
 //		for (int i = 0; i < SCREEN_HEIGHT/UNIT_SIZE; i++) {
