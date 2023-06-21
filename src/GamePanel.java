@@ -5,6 +5,7 @@ import javax.swing.*;
 import directions.DirectionsEnum;
 import gameobjects.Interactable;
 import gameobjects.enemy.BlueEnemy;
+import gameobjects.enemy.RedEnemy;
 import gameobjects.enemy.Enemy;
 import gameobjects.fruit.Apple;
 import gameobjects.fruit.Fruit;
@@ -50,7 +51,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		
 		missMultiplier = 1;
 		
-		Enemy firstEnemy = new BlueEnemy(0, 5 * UNIT_SIZE);
+		Enemy firstEnemy = new RedEnemy(0, 5 * UNIT_SIZE);
 		this.enemyList.add(firstEnemy);
 		
 		Fruit firstFruit = new Apple(5 * UNIT_SIZE, 5 * UNIT_SIZE);
@@ -101,7 +102,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		// draws and updates all enemies
 		for (Interactable enemy: this.enemyList) {
 			enemy.draw(g);
-			((Enemy) enemy).move();
+			((Enemy) enemy).move(player);
 		}
 		
 		// draws all fruits

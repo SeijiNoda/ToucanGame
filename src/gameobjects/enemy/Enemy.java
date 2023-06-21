@@ -4,6 +4,8 @@ import java.awt.Graphics;
 
 import gameobjects.Interactable;
 
+import player.Player;
+
 public abstract class Enemy implements Interactable {
 	private int speed, x = 0, y = 0;
 	private int width = 25, height = 25;
@@ -48,7 +50,7 @@ public abstract class Enemy implements Interactable {
 		this.height = height;
 	}
 
-	public abstract void move();
+	public abstract void move(Player player);
 	
 	public abstract void hitWall();
 }

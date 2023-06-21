@@ -22,8 +22,12 @@ public class Player {
 	
 	private Image[] imagesRight = new Image[2];
 	private Image[] imagesLeft = new Image[2];
-	private int frame = 0;
 	
+    private boolean changeSprite = false;
+	private int changeSpriteCounter = 0;
+
+    private int collisionCounter = 0;
+
 	private void loadImages(String imagesDirectory) {
 		ImageIcon ii;
 		
@@ -110,11 +114,19 @@ public class Player {
 
 	public void setCurrentHP(int currentHP) {
 		this.currentHP = currentHP;
-	}
+    }
 
 	public void draw(Graphics g) {
-		Image image = this.direction == DirectionsEnum.EAST ? imagesRight[frame++] : imagesLeft[frame++];
-		if (frame == 2) frame = 0;
+        changeSpriteCounter++;
+
+        if (changeSpriteCounter == 4) {
+            changeSpriteCounter = 0;
+            changeSprite = !changeSprite;
+        }
+
+		Image image = this.direction == DirectionsEnum.EAST ?
+            imagesRight[changeSprite ? 0 : 1] : imagesLeft[changeSprite ? 0 : 1];
+
 		g.drawImage(image, x, y, null);
 	}
 	
@@ -149,13 +161,23 @@ public class Player {
 	
 	
 	public void loseHP(int howMuch) {
-		this.currentHP -= howMuch;
+        if (collisionCounter == 1) {
+		    this.currentHP -= howMuch;
+        }
 	}
-	
+
 	public Interactable checkCollisions(List<Interactable> gameObjects) {
+        collisionCounter++;
+
+        if (collisionCounter > 60) {
+            collisionCounter = 0;
+        }
+
 		for (Interactable object: gameObjects) {
 			if (object.checkCollision(this.x, this.y, this.width, this.height)) return object;
 		}
+
+        collisionCounter = 0;
 		
 		return null;
 	}

@@ -10,8 +10,8 @@ import directions.DirectionsEnum;
 
 import player.Player;
 
-public class BlueEnemy extends Enemy{
-	private static int SPEED = 16;
+public class RedEnemy extends Enemy{
+	private static int SPEED = 8;
 	private static int HEIGHT = 32;
 	private static int WIDTH = 32;
 	
@@ -24,26 +24,26 @@ public class BlueEnemy extends Enemy{
 	private void loadImages(String imagesDirectory) {
 		ImageIcon ii;
 		// sprite for when enemy is facing East
-		ii = new ImageIcon(imagesDirectory + "blue_0.png");
+		ii = new ImageIcon(imagesDirectory + "red_0.png");
 		this.imagesRight[0] = ii.getImage();
-		ii = new ImageIcon(imagesDirectory + "blue_1.png");
+		ii = new ImageIcon(imagesDirectory + "red_1.png");
 		this.imagesRight[1] = ii.getImage();
 		
 		// sprite for when enemy is facing West
-		ii = new ImageIcon(imagesDirectory + "blue_2.png");
+		ii = new ImageIcon(imagesDirectory + "red_2.png");
 		this.imagesLeft[0] = ii.getImage();
-		ii = new ImageIcon(imagesDirectory + "blue_3.png");
+		ii = new ImageIcon(imagesDirectory + "red_3.png");
 		this.imagesLeft[1] = ii.getImage();
 	}
 	
-	public BlueEnemy() {
+	public RedEnemy() {
 		this.setSpeed(SPEED);
 		this.setHeight(HEIGHT);
 		this.setWidth(WIDTH);
 		loadImages("src/images/enemies/");
 	}
 	
-	public BlueEnemy(int x, int y) {
+	public RedEnemy(int x, int y) {
 		this.setSpeed(SPEED);
 		this.setHeight(HEIGHT);
 		this.setWidth(WIDTH);
@@ -59,6 +59,15 @@ public class BlueEnemy extends Enemy{
 	}
 	
 	public void move(Player player) {
+        int dx = this.getX() - player.getX();
+        int dy = this.getY() - player.getY();
+
+        if (Math.abs(dx) < Math.abs(dy)) {
+            this.direction = dy > 0 ? DirectionsEnum.NORTH : DirectionsEnum.SOUTH;
+        } else {
+            this.direction = dx > 0 ? DirectionsEnum.WEST : DirectionsEnum.EAST;
+        }
+
 		switch(this.direction) {
 			case NORTH: 
 				this.setY(this.getY() - SPEED);;
