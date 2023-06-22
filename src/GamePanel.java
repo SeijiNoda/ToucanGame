@@ -228,6 +228,8 @@ public class GamePanel extends JPanel implements ActionListener {
 			if (touchedPlayer) {
 				remove.add(fruit);
 				fruitCollected.add(fruit);
+				// apply buff for each fruit
+				// this is only the apple's buff, should be in the class
 				scoreMultiplier *= ((Fruit) fruit).getScoreMultiplier();
 				player.buff();
 			}
