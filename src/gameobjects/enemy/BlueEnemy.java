@@ -1,13 +1,9 @@
 package gameobjects.enemy;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
-
 import directions.DirectionsEnum;
-
 import player.Player;
 
 public class BlueEnemy extends Enemy{

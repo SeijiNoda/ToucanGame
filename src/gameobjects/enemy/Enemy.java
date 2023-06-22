@@ -1,9 +1,6 @@
 package gameobjects.enemy;
 
-import java.awt.Graphics;
-
 import gameobjects.Interactable;
-
 import player.Player;
 
 public abstract class Enemy implements Interactable {

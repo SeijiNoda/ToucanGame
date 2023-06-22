@@ -3,15 +3,10 @@ import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-
 import javax.swing.*;
-
 import directions.DirectionsEnum;
 import gameobjects.Interactable;
 import gameobjects.enemy.BlueEnemy;
@@ -21,7 +16,6 @@ import gameobjects.fruit.Apple;
 import gameobjects.fruit.Fruit;
 import player.Player;
 import score.Score;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
@@ -29,43 +23,58 @@ import java.util.Random;
 public class GamePanel extends JPanel implements ActionListener {
 	// Generated serial version ID
 	private static final long serialVersionUID = -2083324232131080328L;
+	
 	private static final int SCREEN_WIDTH = 768;
 	private static final int SCREEN_HEIGHT = 768;
-	
 	private static final int UNIT_SIZE = 32;
-	private static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
-	
 	private static final int DELAY = 34; // ( 1 second / 30 frames) * 1000 milliseconds
 	
-	private static String name = "";
-	private static long score = 0;
-	private static int scoreMultiplier = 1;
+	private static String name;
+	private static long score;
+	private static int scoreMultiplier;
 	private static int missMultiplier;
 	
-	List<Interactable> enemyList =  new ArrayList<Interactable>();
-	List<Interactable> fruitList = new ArrayList<Interactable>();
-	List<Interactable> fruitCollected = new ArrayList<Interactable>();
-	Player player = new Player();
-	DirectionsEnum direction = DirectionsEnum.EAST;
-	boolean playerTouchedLeftBorder = true, 
-			playerTouchedRightBorder = true, 
-			playerTouchedTopBorder = true, 
-			playerTouchedDownBorder = true;
+	private List<Interactable> enemyList;
+	private List<Interactable> fruitList;
+	private List<Interactable> fruitCollected;
 	
-	boolean running = false;
+	private Player player;
+	private boolean running;
+	private static int redEnemyCounter;
 	
-	Timer timer;
-	Random random;
-
-    static int redEnemyCounter = 0;
+	private DirectionsEnum direction;
+	private boolean playerTouchedLeftBorder, 
+					playerTouchedRightBorder, 
+					playerTouchedTopBorder, 
+					playerTouchedDownBorder;
+	
+	private Timer timer;
+	private Random random;
 	
 	GamePanel() {
+		name = "";
+		score = 0;
+		scoreMultiplier = 1;
+		missMultiplier = 1;
+		
+		enemyList =  new ArrayList<Interactable>();
+		fruitList = new ArrayList<Interactable>();
+		fruitCollected = new ArrayList<Interactable>();
+		
+		player = new Player();
+		running = false;
+		redEnemyCounter = 0;
+		
+		direction = DirectionsEnum.EAST;
+		playerTouchedLeftBorder = true;
+		playerTouchedRightBorder = true; 
+		playerTouchedTopBorder = true;
+		playerTouchedDownBorder = true;
+		
 		random = new Random();
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setFocusable(true);
 		this.addKeyListener(new MyKeyAdapter());
-		
-		missMultiplier = 1;
 		
 		Enemy firstEnemy = new RedEnemy(0, 5 * UNIT_SIZE);
 		this.enemyList.add(firstEnemy);
@@ -73,13 +82,13 @@ public class GamePanel extends JPanel implements ActionListener {
 		Fruit firstFruit = new Apple(5 * UNIT_SIZE, 5 * UNIT_SIZE);
 		this.fruitList.add(firstFruit);
 		
-		getPlayerName();
+		askPlayerName();
 		
 		startGame();
 	}
 	
 	// Asks for the player's name
-	private void getPlayerName() {
+	private void askPlayerName() {
 		String response = null;
 		ImageIcon i = new ImageIcon("src/images/player/toucan_2.png");
 		do {

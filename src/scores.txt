@@ -3,3 +3,6 @@ gigi,409
 jovana,0
 gui,426
 guilhermo,0
+Allan,0
+ll,0
+dfbfg,0
