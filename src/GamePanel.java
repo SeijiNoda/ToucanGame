@@ -16,18 +16,20 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class GamePanel extends JPanel implements ActionListener {
-
-	static final int SCREEN_WIDTH = 768;
-	static final int SCREEN_HEIGHT = 768;
+	// Generated serial version ID
+	private static final long serialVersionUID = -2083324232131080328L;
+	private static final int SCREEN_WIDTH = 768;
+	private static final int SCREEN_HEIGHT = 768;
 	
-	static final int UNIT_SIZE = 32;
-	static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
+	private static final int UNIT_SIZE = 32;
+	private static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
 	
-	static final int DELAY = 34; // ( 1 second / 30 frames) * 1000 milliseconds
+	private static final int DELAY = 34; // ( 1 second / 30 frames) * 1000 milliseconds
 	
-	static long score = 0;
-	static int scoreMultiplier = 1;
-	static int missMultiplier;
+	private static String name = "";
+	private static long score = 0;
+	private static int scoreMultiplier = 1;
+	private static int missMultiplier;
 	
 	List<Interactable> enemyList =  new ArrayList<Interactable>();
 	List<Interactable> fruitList = new ArrayList<Interactable>();
@@ -59,10 +61,39 @@ public class GamePanel extends JPanel implements ActionListener {
 		Fruit firstFruit = new Apple(5 * UNIT_SIZE, 5 * UNIT_SIZE);
 		this.fruitList.add(firstFruit);
 		
+		getPlayerName();
+		
 		startGame();
 	}
 	
-	public void startGame() {
+	// Asks for the player's name
+	private void getPlayerName() {
+		Object response = null;
+		ImageIcon i = new ImageIcon("src/images/player/toucan_2.png");
+		do {
+			// input dialog modal pops up on the screen
+			response = JOptionPane.showInputDialog(this, "Insert you name to play:", "Toucan Game", 1, i, null, null);
+			
+			if(response == null) // player pressed "Cancel"
+				System.exit(0); // closes the game
+			
+			if(response.equals("")){ // nothing was inserted and player pressed "OK"
+				JOptionPane.showMessageDialog(this, "Insert your name to play, please!\nIt will be used to register your score.", "Error", JOptionPane.ERROR_MESSAGE);
+				continue; // returns to the loop
+			}
+			
+			if(!((String)response).matches("[a-zA-Z]")) { // the inserted name has non-alpha chars
+				JOptionPane.showMessageDialog(this, "Your name should only contain letters.\nTry again!", "Error", JOptionPane.ERROR_MESSAGE);
+				response = ""; // returns to the loop
+			}
+			
+		} while(response.equals(""));
+		
+		// sets the global variable name with the input
+		name = (String) response;
+	}
+	
+	private void startGame() {
 		running = true;
 		timer = new Timer(DELAY, this);
 		// performs an action detected by actionPerformed() (? don't actually know :P)
@@ -79,7 +110,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		draw(g);
 	}
 	
-	public void draw(Graphics g) {
+	private void draw(Graphics g) {
 		if (!running) {
 			gameOver(g);
 			return;
@@ -91,12 +122,6 @@ public class GamePanel extends JPanel implements ActionListener {
             
             redEnemyCounter++;
         }
-		
-		// draws Game grid
-//		for (int i = 0; i < SCREEN_HEIGHT/UNIT_SIZE; i++) {
-//			g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
-//			g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
-//		}
 		
 		// draws player
 		player.draw(g);
@@ -133,7 +158,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		g.drawString("x" + scoreMultiplier, (SCREEN_WIDTH - metrics.stringWidth("Fruits: ")), UNIT_SIZE * 2);
 	}
 	
-	public void drawPlayerHP(Graphics g, int totalHP, int currentHP) {
+	private void drawPlayerHP(Graphics g, int totalHP, int currentHP) {
 		ImageIcon ii;
 		ii = new ImageIcon("src/images/healthpoints/full_heart.png");
 		Image fullHeart = ii.getImage();
@@ -149,7 +174,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 	}
 	
-	public void checkCollisions() {		
+	private void checkCollisions() {		
 		// checks if player collided with any enemy
 		Interactable obj = player.checkCollisions(this.enemyList);
 		if (obj != null) {
@@ -200,7 +225,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		if (!running) timer.stop();
 	}
 	
-	public void gameOver(Graphics g) {
+	private void gameOver(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		g.setColor(Color.WHITE);
@@ -214,7 +239,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		drawCollectedFruits(g);
 	}
 	
-	public void drawCollectedFruits(Graphics g) {
+	private void drawCollectedFruits(Graphics g) {
 		int howManyFruits = fruitCollected.size();
 		int fruitOffset = 0;
 		int MAX_FRUITS_SHOWED = 5;
@@ -241,7 +266,7 @@ public class GamePanel extends JPanel implements ActionListener {
 		repaint();
 	}
 	
-	public class MyKeyAdapter extends KeyAdapter {
+	private class MyKeyAdapter extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			switch(e.getKeyCode()) {
