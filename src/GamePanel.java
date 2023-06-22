@@ -1,5 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import javax.swing.*;
 
 import directions.DirectionsEnum;
@@ -10,6 +17,7 @@ import gameobjects.enemy.Enemy;
 import gameobjects.fruit.Apple;
 import gameobjects.fruit.Fruit;
 import player.Player;
+import score.Score;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -36,7 +44,10 @@ public class GamePanel extends JPanel implements ActionListener {
 	List<Interactable> fruitCollected = new ArrayList<Interactable>();
 	Player player = new Player();
 	DirectionsEnum direction = DirectionsEnum.EAST;
-	boolean playerTouchedLeftBorder = true, playerTouchedRightBorder = true, playerTouchedTopBorder = true, playerTouchedDownBorder = true;
+	boolean playerTouchedLeftBorder = true, 
+			playerTouchedRightBorder = true, 
+			playerTouchedTopBorder = true, 
+			playerTouchedDownBorder = true;
 	
 	boolean running = false;
 	
@@ -50,8 +61,6 @@ public class GamePanel extends JPanel implements ActionListener {
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setFocusable(true);
 		this.addKeyListener(new MyKeyAdapter());
-		
-		// Here we must read from the Levels.txt file and setup the level's enemy list and fruit list as well as the time for the level and the missMultiplier
 		
 		missMultiplier = 1;
 		
@@ -68,12 +77,12 @@ public class GamePanel extends JPanel implements ActionListener {
 	
 	// Asks for the player's name
 	private void getPlayerName() {
-		Object response = null;
+		String response = null;
 		ImageIcon i = new ImageIcon("src/images/player/toucan_2.png");
 		do {
 			// input dialog modal pops up on the screen
-			response = JOptionPane.showInputDialog(this, "Insert you name to play:", "Toucan Game", 1, i, null, null);
-			
+			response = (String)JOptionPane.showInputDialog(this, "Insert you name to play:", "Toucan Game", 1, i, null, null);
+		
 			if(response == null) // player pressed "Cancel"
 				System.exit(0); // closes the game
 			
@@ -82,7 +91,7 @@ public class GamePanel extends JPanel implements ActionListener {
 				continue; // returns to the loop
 			}
 			
-			if(!((String)response).matches("[a-zA-Z]")) { // the inserted name has non-alpha chars
+			if(!((String)response).matches("[a-zA-Z]+")) { // the inserted name has non-alpha chars
 				JOptionPane.showMessageDialog(this, "Your name should only contain letters.\nTry again!", "Error", JOptionPane.ERROR_MESSAGE);
 				response = ""; // returns to the loop
 			}
@@ -231,12 +240,59 @@ public class GamePanel extends JPanel implements ActionListener {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Ink Free", Font.BOLD, 75));
 		FontMetrics metrics = getFontMetrics(g.getFont());
+		
 		g.drawString("GAME OVER", (SCREEN_WIDTH - metrics.stringWidth("GAME OVER"))/2, SCREEN_HEIGHT/2);
 		g.setFont(new Font("Ink Free", Font.BOLD, 35));
-		String scoreString = score + " pts";
+		
 		metrics = getFontMetrics(g.getFont());
+		String scoreString = score + " pts";
 		g.drawString(scoreString, (SCREEN_WIDTH - metrics.stringWidth(scoreString))/2, (SCREEN_HEIGHT/2) + (35*2));
+		ArrayList<Score> listScores = getScores();
+		addPlayerScore(listScores);
+		//String HighestScoreString = getHighestScore(listScores);
+		//g.drawString(scoreString, (SCREEN_WIDTH - metrics.stringWidth(scoreString))/2, (SCREEN_HEIGHT/2) + (35*2));
+		
 		drawCollectedFruits(g);
+	}
+	
+	private ArrayList<Score> getScores() {
+		File file = new File("src/scores.txt");
+		ArrayList<Score> listScores = new ArrayList<Score>();
+		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			
+			String line;
+			while((line = br.readLine()) != null){
+				String[] data = line.split(",");
+				String playerTxt = data[0];
+				long scoreTxt = Long.parseLong(data[1]);
+				listScores.add(new Score(playerTxt, scoreTxt));
+			}
+			
+			br.close();
+			
+		} catch (IOException e) {
+            e.printStackTrace();
+        }
+		
+		return listScores;
+	}
+	
+	private void addPlayerScore(ArrayList<Score> listScores) {
+		listScores.add(new Score(name, score));
+	}
+	
+	private Score getHighestScore(ArrayList<Score> listScores) {
+		Score highestScore = null;
+		long highest = Integer.MIN_VALUE;
+		
+		for(Score s: listScores) {
+			if(s.getScore() >= highest)
+				highestScore = s;
+		}
+		
+		return highestScore;
 	}
 	
 	private void drawCollectedFruits(Graphics g) {
