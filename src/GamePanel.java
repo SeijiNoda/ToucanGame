@@ -1,11 +1,14 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 import javax.swing.*;
 
@@ -235,61 +238,100 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 	
 	private void gameOver(Graphics g) {
+		// paints the screen black
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		// add game over text
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Ink Free", Font.BOLD, 75));
 		FontMetrics metrics = getFontMetrics(g.getFont());
-		
 		g.drawString("GAME OVER", (SCREEN_WIDTH - metrics.stringWidth("GAME OVER"))/2, SCREEN_HEIGHT/2);
-		g.setFont(new Font("Ink Free", Font.BOLD, 35));
 		
+		// shows current player and score
+		g.setFont(new Font("Ink Free", Font.BOLD, 35));
 		metrics = getFontMetrics(g.getFont());
 		String scoreString = score + " pts";
 		g.drawString(scoreString, (SCREEN_WIDTH - metrics.stringWidth(scoreString))/2, (SCREEN_HEIGHT/2) + (35*2));
-		ArrayList<Score> listScores = getScores();
-		addPlayerScore(listScores);
-		//String HighestScoreString = getHighestScore(listScores);
-		//g.drawString(scoreString, (SCREEN_WIDTH - metrics.stringWidth(scoreString))/2, (SCREEN_HEIGHT/2) + (35*2));
+		
+		// gets highest score of all
+		addPlayerScore(); // adds current player's score
+		ArrayList<Score> listScores = getScores(); // reads all scores from file system
+		Score highestScore = getHighestScore(listScores);
+		// shows highest score
+		g.setFont(new Font("Ink Free", Font.PLAIN, 35));
+		metrics = getFontMetrics(g.getFont());
+		g.drawString("HIGHEST SCORE", (SCREEN_WIDTH - metrics.stringWidth("HIGHEST SCORE"))/2, (SCREEN_HEIGHT/2) - (35*5));
+		String highetScoreString = highestScore.getScore() + " by " + highestScore.getName();
+		g.drawString(highetScoreString, (SCREEN_WIDTH - metrics.stringWidth(highetScoreString))/2, (SCREEN_HEIGHT/2) - (35*3));
 		
 		drawCollectedFruits(g);
 	}
 	
+	// reads from file all the players' names and scores registered of the game and returns it in an arrayList of Scores
 	private ArrayList<Score> getScores() {
 		File file = new File("src/scores.txt");
 		ArrayList<Score> listScores = new ArrayList<Score>();
-		
+		BufferedReader br = null;
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			// creates bufferedReader for scores.txt
+			br = new BufferedReader(new FileReader(file));
 			
 			String line;
 			while((line = br.readLine()) != null){
-				String[] data = line.split(",");
+				String[] data = line.split(","); // breaks line separated by ','
+				
 				String playerTxt = data[0];
 				long scoreTxt = Long.parseLong(data[1]);
-				listScores.add(new Score(playerTxt, scoreTxt));
+				
+				listScores.add(new Score(playerTxt, scoreTxt)); // creates Score and add it to list
 			}
-			
-			br.close();
 			
 		} catch (IOException e) {
             e.printStackTrace();
+        } finally {
+        	try {
+        		// closes file
+        		if(br != null)
+        			br.close();        		
+        	}catch(Exception ex){
+     	       System.out.println("Error in closing the BufferedReader");
+    	    }
         }
 		
 		return listScores;
 	}
 	
-	private void addPlayerScore(ArrayList<Score> listScores) {
-		listScores.add(new Score(name, score));
+	// add current player's name and score to the scores file
+	private void addPlayerScore() {
+		File file = new File("src/scores.txt");
+		BufferedWriter bw = null;
+		try {
+			// creates a bufferedWritter from an already existing file and gives it a tag for appending text
+			bw = new BufferedWriter(new FileWriter(file, true));
+			bw.write(name+","+score+"\n"); // line break
+		} catch (IOException ioe) {
+			   ioe.printStackTrace();
+		} finally {
+        	try {
+        		// closes file
+        		if(bw != null)
+        			bw.close();        		
+        	}catch(Exception ex){
+     	       System.out.println("Error in closing the BufferedWriter");
+    	    }
+        }
 	}
 	
+	// returns the Score with highest score from the list given
 	private Score getHighestScore(ArrayList<Score> listScores) {
 		Score highestScore = null;
 		long highest = Integer.MIN_VALUE;
 		
 		for(Score s: listScores) {
-			if(s.getScore() >= highest)
+			if(s.getScore() >= highest) {
+				highest = s.getScore();
 				highestScore = s;
+			}
 		}
 		
 		return highestScore;
