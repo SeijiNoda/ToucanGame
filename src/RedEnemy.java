@@ -47,10 +47,6 @@ public class RedEnemy extends Enemy {
     public void drawOnScreen (Graphics graphics) {
         int frame = (this.getFrameCounter() / 12) % 2;
 
-        if (this.getDirection() == Directions.W) {
-            frame += 2;
-        }
-
         graphics.drawImage(this.getImage(frame), this.getX(), this.getY(), null);
         this.incrementFrameCounter();
     }

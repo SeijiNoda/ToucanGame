@@ -128,10 +128,17 @@ public class Player {
 
     // Decrement current HP in one unit
     public void decrementCurrentHP () {
-        if (this.imunityCounter > 100) {
-            this.currentHP -= 1;
-            this.imunityCounter = 0;
-        }
+        this.currentHP -= 1;
+    }
+
+    // Imunity counter getter
+    public int getImunityCounter () {
+        return this.imunityCounter;
+    }
+
+    // Imunity counter setter
+    public void setImunityCounter (int imunityCounter) {
+        this.imunityCounter = imunityCounter;
     }
 
     // Frame counter getter

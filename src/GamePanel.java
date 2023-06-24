@@ -1,12 +1,19 @@
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
 
 import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 
 public class GamePanel extends JPanel implements ActionListener {
@@ -18,13 +25,19 @@ public class GamePanel extends JPanel implements ActionListener {
 
     int[] keyPressedMap = {0, 0, 0, 0};
 
-    static final int screenWidth = 768;
-    static final int screenHeight = 768;
+    // Generated serial version ID
+    private static final long serialVersionUID = -2083324232131080328L;
 
-    static final int delay = 10;   // 100 FPS
+    private static final int screenWidth = 768;
+    private static final int screenHeight = 768;
 
-    static long score = 0;
-    static int scoreMultiplier = 1;
+    private static final int delay = 10;   // 100 FPS
+
+    private static String name;
+    private static long score = 0;
+    private static int scoreMultiplier = 1;
+
+    private static boolean wrotePlayerScore = false;
 
     Player player = new Player(368, 368);
     List<Enemy> enemies =  new ArrayList<Enemy>();
@@ -50,29 +63,178 @@ public class GamePanel extends JPanel implements ActionListener {
         // Second blue enemy
         this.enemies.add(blueEnemy);
 
+        getPlayerName();
+
         startGame();
     }
 
+    // Ask the player's name
+    private void getPlayerName() {
+        String response = null;
+        ImageIcon imageIcon = new ImageIcon("src/images/player/1.png");
+
+        do {
+            // Input dialog modal pops up on the screen
+            response = (String) JOptionPane.showInputDialog(
+                this, "Insert you name to play:", "Toucan Game", 1, imageIcon, null, null
+            );
+
+            // Player pressed "Cancel"
+            if (response == null) {
+                System.exit(0);
+            }
+
+            // Nothing was inserted and player pressed "OK"
+            if (response.equals("")) {
+                JOptionPane.showMessageDialog(
+                    this, "Insert your name to play, please!\nIt will be used to register your score.",
+                    "Error", JOptionPane.ERROR_MESSAGE
+                );
+
+                continue;
+            }
+
+            // The inserted name has non-alpha characters
+            if (!((String) response).matches("[a-zA-Z]+")) {
+                JOptionPane.showMessageDialog(
+                    this, "Your name should only contain letters.\nTry again!",
+                    "Error", JOptionPane.ERROR_MESSAGE
+                );
+
+                response = "";
+            }
+
+        } while (response.equals(""));
+
+        name = (String) response;
+    }
+
     // Start the game properly
-    public void startGame() {
+    private void startGame() {
         this.running = true;
         this.timer = new Timer(delay, this);
         this.timer.start();
     }
 
     // Game over window
-    public void gameOver(Graphics graphics) {
+    private void gameOver(Graphics graphics) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, screenWidth, screenHeight);
         graphics.setColor(Color.WHITE);
         graphics.setFont(new Font("Ink Free", Font.BOLD, 75));
         metrics = getFontMetrics(graphics.getFont());
-        graphics.drawString("GAME OVER", (screenWidth - metrics.stringWidth("GAME OVER"))/2, screenHeight/2);
+
+        graphics.drawString(
+            "GAME OVER", (screenWidth - metrics.stringWidth("GAME OVER")) / 2, screenHeight / 2
+        );
+
         graphics.setFont(new Font("Ink Free", Font.BOLD, 35));
-        String scoreString = score + " pts";
+        
         metrics = getFontMetrics(graphics.getFont());
-        graphics.drawString(scoreString, (screenWidth - metrics.stringWidth(scoreString))/2, (screenHeight/2) + 70);
+        String scoreString = score + " pts";
+
+        graphics.drawString(
+            scoreString, (screenWidth - metrics.stringWidth(scoreString)) / 2, (screenHeight / 2) + 70
+        );
+
+        if (!wrotePlayerScore) {
+            addPlayerScore();
+        }
+
+        ArrayList<Score> scores = getScores();
+        Score highestScore = getHighestScore(scores);
+
+        graphics.setFont(new Font("Ink Free", Font.PLAIN, 35));
+        metrics = getFontMetrics(graphics.getFont());
+
+        graphics.drawString(
+            "HIGHEST SCORE", (screenWidth - metrics.stringWidth("HIGHEST SCORE")) / 2, (screenHeight / 2) - 175
+        );
+
+        String highestScoreString = highestScore.getScore() + " by " + highestScore.getName();
+        graphics.drawString(
+            highestScoreString, (screenWidth - metrics.stringWidth(highestScoreString)) / 2, (screenHeight / 2) - 105
+        );
+
         // drawCollectedFruits(graphics);
+    }
+
+    // Get a list of all registered scores
+    private ArrayList<Score> getScores() {
+        File file = new File("src/scores.txt");
+
+        ArrayList<Score> scores = new ArrayList<Score>();
+        BufferedReader bufferedReader = null;
+
+        try {
+            bufferedReader = new BufferedReader(new FileReader(file));
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null){
+                String[] data = line.split(",");
+
+                String name = data[0];
+                long score = Long.parseLong(data[1]);
+
+                // Create Score and add it to list
+                scores.add(new Score(name, score));
+            }
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+
+        } finally {
+            try {
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+                
+            } catch (Exception ex) {
+                System.out.println("Error closing the BufferedReader");
+            }
+        }
+
+        return scores;
+    }
+
+    // Add current player's name and score to the scores file
+    private void addPlayerScore() {
+        File file = new File("src/scores.txt");
+        BufferedWriter bufferedWriter = null;
+
+        try {
+            bufferedWriter = new BufferedWriter(new FileWriter(file, true));
+            bufferedWriter.write(name + "," + score + "\n");
+            wrotePlayerScore = true;
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+
+        } finally {
+            try {
+                if (bufferedWriter != null) {
+                    bufferedWriter.close();
+                }
+
+            } catch (Exception ex) {
+                System.out.println("Error closing the BufferedWriter");
+            }
+        }
+    }
+
+    // Return the highest score from the list given
+    private Score getHighestScore(ArrayList<Score> listScores) {
+        Score highestScore = null;
+        long highest = Integer.MIN_VALUE;
+
+        for(Score score: listScores) {
+            if(score.getScore() >= highest) {
+                highest = score.getScore();
+                highestScore = score;
+            }
+        }
+
+        return highestScore;
     }
 
     @Override
@@ -85,7 +247,7 @@ public class GamePanel extends JPanel implements ActionListener {
         drawOnScreen(graphics);
     }
 
-    public void drawOnScreen(Graphics graphics) {
+    private void drawOnScreen(Graphics graphics) {
         if (!this.running) {
             gameOver(graphics);
             return;
@@ -141,8 +303,8 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.drawString(multiplier, (screenWidth - metrics.stringWidth(multiplier)) - 8, 52);
     }
 
-    // Draw player health points in the top middle of the screen
-    public void drawPlayerHP (Graphics graphics) {
+    // Draw player health points in the top middle
+    private void drawPlayerHP (Graphics graphics) {
         ImageIcon imageIcon = new ImageIcon("src/images/healthPoints/full.png");
         Image fullHeart = imageIcon.getImage();
 
@@ -163,7 +325,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public class MyKeyAdapter extends KeyAdapter {
+    private class MyKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent event) {
             switch(event.getKeyCode()) {
@@ -202,7 +364,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     // Check player-enemy and enemy-enemy collisions
-    public void checkCollisions () {
+    private void checkCollisions () {
         for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
 
@@ -235,11 +397,14 @@ public class GamePanel extends JPanel implements ActionListener {
                 continue;
             }
 
+            boolean collided = enemy.checkCollision(
+                player.getX(), player.getY(), player.getWidth(), player.getHeight()
+            );
+
             // Check the collision between the player and some enemy
-            if (enemy.checkCollision(player.getX(), player.getY(), player.getWidth(), player.getHeight())) {
+            if (collided && player.getImunityCounter() > 100) {
                 player.decrementCurrentHP();
 
-                // Decrement player health points
                 if (player.getCurrentHP() <= 0) {
                     this.running = false;
                 }
@@ -247,6 +412,8 @@ public class GamePanel extends JPanel implements ActionListener {
                 // Penalize the collision and reset the score multiplier
                 score -= Math.min(100, score);
                 scoreMultiplier = 1;
+
+                player.setImunityCounter(0);
             }
         }
     }
