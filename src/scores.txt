@@ -1,8 +1,3 @@
-jo,216
-gigi,409
-jovana,0
-gui,426
-guilhermo,0
-Allan,0
-ll,0
-dfbfg,0
+filipe,4057
+joao,2534
+b,134
