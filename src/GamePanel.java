@@ -43,6 +43,7 @@ public class GamePanel extends JPanel implements ActionListener {
     List<Enemy> enemies =  new ArrayList<Enemy>();
 
     static int redEnemiesCounter = 0;
+    static int fruitsCounter = 0;
 
     GamePanel() {
         this.generator = new Random();
@@ -71,7 +72,7 @@ public class GamePanel extends JPanel implements ActionListener {
     // Ask the player's name
     private void getPlayerName() {
         String response = null;
-        ImageIcon imageIcon = new ImageIcon("src/images/player/1.png");
+        ImageIcon imageIcon = new ImageIcon("/src/images/player/1.png ");
 
         do {
             // Input dialog modal pops up on the screen
@@ -241,7 +242,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        ImageIcon imageIcon = new ImageIcon("src/images/background/background.png");
+        ImageIcon imageIcon = new ImageIcon("/src/images/background/background.png");
 
         graphics.drawImage(imageIcon.getImage(), 0, 0, null);
         drawOnScreen(graphics);
@@ -275,6 +276,13 @@ public class GamePanel extends JPanel implements ActionListener {
             
             redEnemiesCounter = (int) (score / 500);
         }
+        
+      /*
+        // Spawn a new random fruit for each 250 points
+        if (score / 250 > fruitsCounter) {
+        	Fruit 
+        }
+        */
 
         // Move and draw each enemy
         for (Enemy enemy: this.enemies) {
