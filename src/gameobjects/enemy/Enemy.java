@@ -1,6 +1,10 @@
-import java.awt.Image;
+package gameObjects.enemy;
 
+import java.awt.Image;
 import javax.swing.ImageIcon;
+import directions.Directions;
+import gameObjects.Entity;
+import player.Player;
 
 public abstract class Enemy implements Entity {
 	protected int x;

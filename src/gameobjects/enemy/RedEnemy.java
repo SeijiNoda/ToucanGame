@@ -1,5 +1,9 @@
+package gameObjects.enemy;
+
 import java.awt.Graphics;
 import java.util.Random;
+import directions.Directions;
+import player.Player;
 
 
 public class RedEnemy extends Enemy {

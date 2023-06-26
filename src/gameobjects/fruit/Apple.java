@@ -1,3 +1,6 @@
+package gameObjects.fruit;
+
+import player.Player;
 
 public class Apple extends Fruit {
 	

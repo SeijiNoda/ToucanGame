@@ -1,3 +1,6 @@
+package gameObjects.fruit;
+
+import player.Player;
 
 public class Blueberry extends Fruit {
 

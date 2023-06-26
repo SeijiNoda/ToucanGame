@@ -1,3 +1,6 @@
+package gameObjects;
+
+import player.Player;
 
 public interface Consumable extends Entity{
 	

@@ -1,3 +1,5 @@
+package gameObjects;
+
 import java.awt.Graphics;
 
 public interface Entity {

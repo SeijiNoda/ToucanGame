@@ -4,33 +4,41 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
-
-import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import directions.Directions;
+import gameObjects.Consumable;
+import gameObjects.enemy.Enemy;
+import gameObjects.enemy.BlueEnemy;
+import gameObjects.enemy.RedEnemy;
+import gameObjects.fruit.Apple;
+import gameObjects.fruit.Banana;
+import gameObjects.fruit.Blueberry;
+import gameObjects.fruit.Basket;
+import player.Player;
+import score.Score;
+
 public class GamePanel extends JPanel implements ActionListener {
-    Timer timer;
-    Random generator;
-    FontMetrics metrics;
-
-    boolean running = true;
-
-    int[] keyPressedMap = {0, 0, 0, 0};
-
     // Generated serial version ID
     private static final long serialVersionUID = -2083324232131080328L;
 
+    private Timer timer;
+    private Random generator;
+    private FontMetrics metrics;
+
+    private boolean running = true;
+
+    private int[] keyPressedMap = {0, 0, 0, 0};
+    
     private static final int screenWidth = 768;
     private static final int screenHeight = 768;
 
-    private static final int delay = 10;   // 100 FPS
+    private static final int delay = 10; // 100 FPS
 
     private static String name;
     private static long score = 0;
@@ -39,15 +47,15 @@ public class GamePanel extends JPanel implements ActionListener {
     private static boolean wrotePlayerScore = false;
 
     private Player player = new Player(368, 368);
-    private List<Enemy> enemies =  new ArrayList<Enemy>();
+    private ArrayList<Enemy> enemies =  new ArrayList<Enemy>();
     private ArrayList<Consumable> consumables = new ArrayList<Consumable>();
 
-    static int redEnemiesCounter = 0;
-    static int fruitsCounter = 0;
+    private static int redEnemiesCounter = 0;
+    private static int fruitsCounter = 0;
 
     GamePanel() {
-        this.generator = new Random();
-
+        this.generator = new Random(); 
+        
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
@@ -64,13 +72,13 @@ public class GamePanel extends JPanel implements ActionListener {
         // Second blue enemy
         this.enemies.add(blueEnemy);
 
-        getPlayerName();
+        askNamePlayer();
 
         startGame();
     }
 
     // Ask the player's name
-    private void getPlayerName() {
+    private void askNamePlayer() {
         String response = null;
         ImageIcon imageIcon = new ImageIcon("src/images/player/1.png ");
 
@@ -110,7 +118,7 @@ public class GamePanel extends JPanel implements ActionListener {
         name = (String) response;
     }
 
-    // Start the game properly
+    // Starts the game properly
     private void startGame() {
         this.running = true;
         this.timer = new Timer(delay, this);
@@ -156,8 +164,6 @@ public class GamePanel extends JPanel implements ActionListener {
         graphics.drawString(
             highestScoreString, (screenWidth - metrics.stringWidth(highestScoreString)) / 2, (screenHeight / 2) - 105
         );
-
-        // drawCollectedFruits(graphics);
     }
 
     // Get a list of all registered scores
@@ -216,7 +222,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 if (bufferedWriter != null) {
                     bufferedWriter.close();
                 }
-
             } catch (Exception ex) {
                 System.out.println("Error closing the BufferedWriter");
             }

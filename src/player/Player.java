@@ -1,7 +1,11 @@
+package player;
+
 import java.awt.Image;
 import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
+
+import directions.Directions;
 
 public class Player {
     private int x;

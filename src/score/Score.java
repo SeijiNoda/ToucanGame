@@ -1,4 +1,7 @@
+package score;
+
 public class Score {
+	
     private String name;
     private long score;
 

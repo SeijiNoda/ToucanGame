@@ -1,5 +1,9 @@
+package gameObjects.enemy;
+
 import java.awt.Graphics;
 
+import directions.Directions;
+import player.Player;
 
 public class BlueEnemy extends Enemy {
 

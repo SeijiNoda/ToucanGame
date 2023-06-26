@@ -1,3 +1,5 @@
+package directions;
+
 public enum Directions {
     N, S, E, W, STOPPED;
 
