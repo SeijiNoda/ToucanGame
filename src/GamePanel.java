@@ -39,9 +39,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private static boolean wrotePlayerScore = false;
 
-    Player player = new Player(368, 368);
-    List<Enemy> enemies =  new ArrayList<Enemy>();
-    ArrayList<Consumable> consumables = new ArrayList<Consumable>();
+    private Player player = new Player(368, 368);
+    private List<Enemy> enemies =  new ArrayList<Enemy>();
+    private ArrayList<Consumable> consumables = new ArrayList<Consumable>();
 
     static int redEnemiesCounter = 0;
     static int fruitsCounter = 0;
@@ -281,38 +281,52 @@ public class GamePanel extends JPanel implements ActionListener {
       
         // Spawn a new random fruit for each 250 points
         if (score / 250 > fruitsCounter) {
-        	int x = generator.nextInt(768);
-        	int y = generator.nextInt(768);
+        	int x = generator.nextInt(740);
+        	int y = generator.nextInt(740);
         	int chances = generator.nextInt(100);
         	if (chances <= 50) {
         		chances = generator.nextInt(3);
         		if (chances == 1) {
-        			Fruit fruit = new Apple(x, y);
+        			Apple fruit = new Apple(x, y);
         			consumables.add(fruit);
         		}
         		else if (chances == 2) {
-        			Fruit fruit = new Banana(x, y);
+        			Banana fruit = new Banana(x, y);
         			consumables.add(fruit);
         		}
         		else {
-        			Fruit fruit = new Blueberry(x, y);
+        			Blueberry fruit = new Blueberry(x, y);
         			consumables.add(fruit);
         		}
         	}
         	else if (chances > 50 && chances <= 75) {
         		chances = generator.nextInt(2);
         		if (chances == 1) {
-        			//Apple-banana
+        			Apple apple = new Apple(x, y);
+        			Banana banana = new Banana(x, y);
+        			Basket basket = new Basket(x, y, apple, banana);
+        			consumables.add(basket);
+        			
         		}
         		else {
-        			//Apple-blueberry
+        			Apple apple = new Apple(x, y);
+        			Blueberry blueberry = new Blueberry(x, y);
+        			Basket basket = new Basket(x, y, apple, blueberry);
+        			consumables.add(basket);        		
         		}
         	}
         	else if (chances > 75 && chances < 90) {
-        		//Banana-blueberry
+    			Banana banana = new Banana(x, y);
+    			Blueberry blueberry = new Blueberry(x, y);
+    			Basket basket = new Basket(x, y, banana, blueberry);
+    			consumables.add(basket);        		
         	}
         	else {
-        		//Basket
+        		Apple apple = new Apple(x, y);
+    			Banana banana = new Banana(x, y);
+    			Blueberry blueberry = new Blueberry(x, y);
+    			Basket basket = new Basket(x, y, apple, banana, blueberry);
+    			consumables.add(basket);        		
         	}
         }
         
@@ -404,7 +418,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    // Check player-enemy and enemy-enemy collisions
+    // Check player-enemy, enemy-enemy and player-fruit collisions
     private void checkCollisions () {
         for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
@@ -456,6 +470,23 @@ public class GamePanel extends JPanel implements ActionListener {
 
                 player.setImunityCounter(0);
             }
+        }
+        
+        for (Consumable consumable : this.consumables) {
+        	if (consumable == null) {
+        		continue;
+        	}
+        	
+        	boolean collided = consumable.checkCollision(
+                    player.getX(), player.getY(), player.getWidth(), player.getHeight()
+        	);
+        	
+        	if (collided) {
+            	//Fortifies the player and removes the fruit
+        		consumable.fortify(player);
+        		consumables.remove(consumable);
+        		break;
+        	}
         }
     }
 
