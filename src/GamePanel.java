@@ -73,7 +73,7 @@ public class GamePanel extends JPanel implements ActionListener {
     // Ask the player's name
     private void getPlayerName() {
         String response = null;
-        ImageIcon imageIcon = new ImageIcon("/src/images/player/1.png ");
+        ImageIcon imageIcon = new ImageIcon("src/images/player/1.png ");
 
         do {
             // Input dialog modal pops up on the screen
@@ -243,7 +243,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
 
-        ImageIcon imageIcon = new ImageIcon("/src/images/background/background.png");
+        ImageIcon imageIcon = new ImageIcon("src/images/background/background.png");
 
         graphics.drawImage(imageIcon.getImage(), 0, 0, null);
         drawOnScreen(graphics);

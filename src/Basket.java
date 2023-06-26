@@ -19,7 +19,7 @@ public class Basket implements Entity, Consumable{
     	this.y = y;
     	fruits.add(fruit1);
     	fruits.add(fruit2);
-    	this.loadImage("/src/images/fruits/apple_banana.png", 0);
+    	this.loadImage("src/images/fruits/apple_banana.png", 0);
 	}
 	
 	public Basket(int x, int y, Apple fruit1, Blueberry fruit2) {
@@ -27,7 +27,7 @@ public class Basket implements Entity, Consumable{
     	this.y = y;
     	fruits.add(fruit1);
     	fruits.add(fruit2);
-    	this.loadImage("/src/images/fruits/apple_blueberry.png", 0);
+    	this.loadImage("src/images/fruits/apple_blueberry.png", 0);
 	}
 	
 	public Basket(int x, int y, Banana fruit1, Blueberry fruit2) {
@@ -35,7 +35,7 @@ public class Basket implements Entity, Consumable{
     	this.y = y;
     	fruits.add(fruit1);
     	fruits.add(fruit2);
-    	this.loadImage("/src/images/fruits/banana_blueberry.png", 0);
+    	this.loadImage("src/images/fruits/banana_blueberry.png", 0);
 	}
 	
 	public Basket(int x, int y, Fruit fruit1, Fruit fruit2, Fruit fruit3) {
@@ -44,7 +44,7 @@ public class Basket implements Entity, Consumable{
     	fruits.add(fruit1);
     	fruits.add(fruit2);
     	fruits.add(fruit3);	
-    	this.loadImage("/src/images/fruits/basket.png", 0);
+    	this.loadImage("src/images/fruits/basket.png", 0);
 	}
 	
 	public int getX() {
