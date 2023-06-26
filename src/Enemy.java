@@ -2,14 +2,13 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-
 public abstract class Enemy implements Entity {
-    private int x;
-    private int y;
+	protected int x;
+	protected int y;
 
-    private int speed;
-    private int width;
-    private int height;
+    protected int speed;
+    protected int width;
+    protected int height;
 
     private Image[] images = new Image[4];
     private int frameCounter = 0;
@@ -121,6 +120,6 @@ public abstract class Enemy implements Entity {
         return collisionX && collisionY;
     }
 
-    // Generic method to make the enemy movement action
-    public void move (Player player) {}
+    // method to make the enemy movement action
+    public abstract void move (Player player);
 }

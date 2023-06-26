@@ -6,15 +6,16 @@ import javax.swing.ImageIcon;
 public abstract class Fruit implements Entity, Consumable{
     private int x;
     private int y;
-    
-    private static int width = 28;
-    private static int height = 28;
-    
-    private Image[] image = new Image[1];
+    private static int width;
+    private static int height;
+    private Image[] image;
     
     public Fruit (int x, int y) {
     	this.x = x;
     	this.y = y;
+    	this.image = new Image[1];
+    	width = 28;
+    	height = 28;
     }
 
 	public int getX() {
@@ -64,10 +65,9 @@ public abstract class Fruit implements Entity, Consumable{
         this.image[index] = imageIcon.getImage();
     }
     
-    //Draws the fruit on the screen
+    // Draws the fruit on the screen
 	public void drawOnScreen(Graphics graphics) {
 		graphics.drawImage(this.getImage(), this.getX(), this.getY(), null);
-
 	}
 	
 	public abstract void fortify (Player player);

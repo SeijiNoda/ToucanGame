@@ -15,7 +15,6 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 public class GamePanel extends JPanel implements ActionListener {
     Timer timer;
     Random generator;

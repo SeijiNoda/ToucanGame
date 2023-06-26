@@ -3,38 +3,47 @@ import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
 
-
 public class Player {
     private int x;
     private int y;
 
-    private int speed = 4;
-    private int width = 28;
-    private int height = 28;
+    private int speed;
+    private int width;
+    private int height;
 
     private int totalHP;
     private int currentHP;
 
     // Imunity after collision with enemy
-    private int imunityCounter = 100;
+    private int imunityCounter;
 
-    private Image[] images = new Image[5];
-    private int frameCounter = 0;
+    private Image[] images;
+    private int frameCounter;
 
-    private Directions direction = Directions.STOPPED;
-    private Directions movementSide = Directions.E;
+    private Directions direction;
+    private Directions movementSide;
 
-    private int buffCounter = 100;
+    private int buffCounter;
 
     // Constructor of the class without parameters
     public Player () {
-        this.setSpeed(speed);
-        this.setWidth(width);
-        this.setHeight(height);
+    	speed = 4;
+        width = 28;
+        height = 28;
 
         this.totalHP = 3;
         this.currentHP = 3;
-
+        
+        imunityCounter = 100;
+        
+        images = new Image[5];
+        frameCounter = 0;
+        
+        direction = Directions.STOPPED;
+        movementSide = Directions.E;
+        
+        buffCounter = 100;
+        
         this.loadImage("src/images/player/0.png", 0);
         this.loadImage("src/images/player/1.png", 1);
         this.loadImage("src/images/player/2.png", 2);
@@ -44,15 +53,25 @@ public class Player {
 
     // Constructor of the class with parameters
     public Player (int x, int y) {
-        this.setX(x);
-        this.setY(y);
+    	this.x = x;
+    	this.y = y;
 
-        this.setSpeed(speed);
-        this.setWidth(width);
-        this.setHeight(height);
+    	speed = 4;
+        width = 28;
+        height = 28;
 
         this.totalHP = 3;
         this.currentHP = 3;
+        
+        imunityCounter = 100;
+        
+        images = new Image[5];
+        frameCounter = 0;
+        
+        direction = Directions.STOPPED;
+        movementSide = Directions.E;
+        
+        buffCounter = 100;
 
         this.loadImage("src/images/player/0.png", 0);
         this.loadImage("src/images/player/1.png", 1);

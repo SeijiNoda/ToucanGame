@@ -5,11 +5,12 @@ public class Apple extends Fruit {
 		super(x, y);
 		this.loadImage("src/images/fruits/apple.png", 0);
 	}
-	
-	public void fortify (Player player) {
+
+	// apple's buff gives 1 HP to player
+	@Override
+	public void fortify(Player player) {
 		if (player.getCurrentHP() < player.getTotalHP())
 			player.incrementCurrentHP();
 	}
-
-
+	
 }

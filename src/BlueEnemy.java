@@ -2,16 +2,12 @@ import java.awt.Graphics;
 
 
 public class BlueEnemy extends Enemy {
-    private static int speed = 2;
-    private static int width = 28;
-    private static int height = 28;
 
     // Constructor of the class without parameters
     public BlueEnemy () {
-        this.setSpeed(speed);
-        this.setWidth(width);
-        this.setHeight(height);
-
+    	speed = 2;
+        width = 28;
+        height = 28;
         this.loadImage("src/images/blueEnemy/0.png", 0);
         this.loadImage("src/images/blueEnemy/1.png", 1);
         this.loadImage("src/images/blueEnemy/2.png", 2);
@@ -20,13 +16,12 @@ public class BlueEnemy extends Enemy {
 
     // Constructor of the class with parameters
     public BlueEnemy (int x, int y) {
-        this.setX(x);
-        this.setY(y);
-
-        this.setSpeed(speed);
-        this.setWidth(width);
-        this.setHeight(height);
-
+        this.x = x;
+        this.y = y;
+        
+        speed = 2;
+        width = 28;
+        height = 28;
         this.loadImage("src/images/blueEnemy/0.png", 0);
         this.loadImage("src/images/blueEnemy/1.png", 1);
         this.loadImage("src/images/blueEnemy/2.png", 2);

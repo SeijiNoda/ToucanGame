@@ -3,21 +3,18 @@ import java.util.Random;
 
 
 public class RedEnemy extends Enemy {
-    private static int speed = 1;
-    private static int width = 28;
-    private static int height = 28;
 
     // Random factor to do the enemy following path slightly different to the others
     private final float alpha;
 
     // Constructor of the class without parameters
     public RedEnemy () {
-        this.setSpeed(speed);
-        this.setWidth(width);
-        this.setHeight(height);
+    	speed = 1;
+        width = 28;
+        height = 28;
 
         Random generator = new Random();
-        this.alpha = 1 + 1.2f * (generator.nextFloat() - 0.5f);
+        this.alpha = 1 + 1.2f * (generator.nextFloat() - 0.5f);  // Random value between 0.4 and 1.6
 
         this.loadImage("src/images/redEnemy/0.png", 0);
         this.loadImage("src/images/redEnemy/1.png", 1);
@@ -27,12 +24,12 @@ public class RedEnemy extends Enemy {
 
     // Constructor of the class with parameters
     public RedEnemy (int x, int y) {
-        this.setX(x);
-        this.setY(y);
+        this.x = x;
+        this.y = y;
 
-        this.setSpeed(speed);
-        this.setWidth(width);
-        this.setHeight(height);
+        speed = 1;
+        width = 28;
+        height = 28;
         
         Random generator = new Random();
         this.alpha = 1 + 1.2f * (generator.nextFloat() - 0.5f);   // Random value between 0.4 and 1.6

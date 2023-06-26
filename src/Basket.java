@@ -7,40 +7,45 @@ import javax.swing.ImageIcon;
 public class Basket implements Entity, Consumable{
 	private int x;
     private int y;
-    
-    private static int width = 28;
-    private static int height = 28;
-    
-    private Image[] image = new Image[1];
-    private ArrayList<Fruit> fruits = new ArrayList<Fruit>();
+    private static int width;
+    private static int height;
+    private Image[] image;
+    private ArrayList<Fruit> fruits;
 
-	public Basket(int x, int y, Apple fruit1, Banana fruit2) {
+	public Basket(int x, int y, Fruit fruit1, Fruit fruit2) {
 		this.x = x;
     	this.y = y;
+    	width = 28;
+    	height = 28;
+    	image = new Image[1];
+    	fruits = new ArrayList<Fruit>();
     	fruits.add(fruit1);
     	fruits.add(fruit2);
-    	this.loadImage("src/images/fruits/apple_banana.png", 0);
-	}
-	
-	public Basket(int x, int y, Apple fruit1, Blueberry fruit2) {
-		this.x = x;
-    	this.y = y;
-    	fruits.add(fruit1);
-    	fruits.add(fruit2);
-    	this.loadImage("src/images/fruits/apple_blueberry.png", 0);
-	}
-	
-	public Basket(int x, int y, Banana fruit1, Blueberry fruit2) {
-		this.x = x;
-    	this.y = y;
-    	fruits.add(fruit1);
-    	fruits.add(fruit2);
-    	this.loadImage("src/images/fruits/banana_blueberry.png", 0);
+    	
+    	// verifies which pair of frutis it is in order to set the right image
+    	boolean banana = false, apple = false, blueberry = false;
+    	if(fruit1 instanceof Apple || fruit2 instanceof Apple)
+    		apple = true;;
+    	if(fruit1 instanceof Banana || fruit2 instanceof Banana)
+    		banana = true;
+    	if(fruit1 instanceof Blueberry || fruit2 instanceof Blueberry)
+    		blueberry = true;
+    	
+    	if(apple && banana)
+    		this.loadImage("src/images/fruits/apple_banana.png", 0);
+    	else if(apple && blueberry)
+    		this.loadImage("src/images/fruits/apple_blueberry.png", 0);
+    	else if(banana && blueberry)
+    		this.loadImage("src/images/fruits/banana_blueberry.png", 0);
 	}
 	
 	public Basket(int x, int y, Fruit fruit1, Fruit fruit2, Fruit fruit3) {
 		this.x = x;
     	this.y = y;
+    	width = 28;
+    	height = 28;
+    	image = new Image[1];
+    	fruits = new ArrayList<Fruit>();
     	fruits.add(fruit1);
     	fruits.add(fruit2);
     	fruits.add(fruit3);	
@@ -105,7 +110,6 @@ public class Basket implements Entity, Consumable{
     //Draws the fruit on the screen
 	public void drawOnScreen(Graphics graphics) {
 		graphics.drawImage(this.getImage(), this.getX(), this.getY(), null);
-
 	}
 
 	@Override
@@ -113,7 +117,6 @@ public class Basket implements Entity, Consumable{
 		for (Fruit fruit : fruits) {
 			fruit.fortify(player);
 		}
-		
 	}
 
 }
