@@ -7,7 +7,8 @@ public class Apple extends Fruit {
 	}
 	
 	public void fortify (Player player) {
-		player.incrementCurrentHP();
+		if (player.getCurrentHP() < player.getTotalHP())
+			player.incrementCurrentHP();
 	}
 
 
