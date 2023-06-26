@@ -328,6 +328,7 @@ public class GamePanel extends JPanel implements ActionListener {
     			Basket basket = new Basket(x, y, apple, banana, blueberry);
     			consumables.add(basket);        		
         	}
+        	fruitsCounter = (int) (score / 250);
         }
         
 
