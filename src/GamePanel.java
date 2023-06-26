@@ -41,6 +41,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     Player player = new Player(368, 368);
     List<Enemy> enemies =  new ArrayList<Enemy>();
+    ArrayList<Consumable> consumables = new ArrayList<Consumable>();
 
     static int redEnemiesCounter = 0;
     static int fruitsCounter = 0;
@@ -277,12 +278,44 @@ public class GamePanel extends JPanel implements ActionListener {
             redEnemiesCounter = (int) (score / 500);
         }
         
-      /*
+      
         // Spawn a new random fruit for each 250 points
         if (score / 250 > fruitsCounter) {
-        	Fruit 
+        	int x = generator.nextInt(768);
+        	int y = generator.nextInt(768);
+        	int chances = generator.nextInt(100);
+        	if (chances <= 50) {
+        		chances = generator.nextInt(3);
+        		if (chances == 1) {
+        			Fruit fruit = new Apple(x, y);
+        			consumables.add(fruit);
+        		}
+        		else if (chances == 2) {
+        			Fruit fruit = new Banana(x, y);
+        			consumables.add(fruit);
+        		}
+        		else {
+        			Fruit fruit = new Blueberry(x, y);
+        			consumables.add(fruit);
+        		}
+        	}
+        	else if (chances > 50 && chances <= 75) {
+        		chances = generator.nextInt(2);
+        		if (chances == 1) {
+        			//Apple-banana
+        		}
+        		else {
+        			//Apple-blueberry
+        		}
+        	}
+        	else if (chances > 75 && chances < 90) {
+        		//Banana-blueberry
+        	}
+        	else {
+        		//Basket
+        	}
         }
-        */
+        
 
         // Move and draw each enemy
         for (Enemy enemy: this.enemies) {
