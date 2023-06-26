@@ -24,7 +24,7 @@ public class Player {
     private Directions direction = Directions.STOPPED;
     private Directions movementSide = Directions.E;
 
-    private boolean buffed = false;
+    private int buffCounter = 100;
 
     // Constructor of the class without parameters
     public Player () {
@@ -83,7 +83,7 @@ public class Player {
 
     // Speed getter
     public int getSpeed () {
-        return this.buffed ? this.speed + 6 : this.speed;
+        return (this.buffCounter < 100) ? this.speed + 6 : this.speed;
     }
 
     // Speed setter
@@ -130,6 +130,21 @@ public class Player {
     public void decrementCurrentHP () {
         this.currentHP -= 1;
     }
+    
+    //Decrement current HP in x units
+    public void decrementCurrentHP (int x) {
+    	this.currentHP -= x;
+    }
+    
+    //Increment current HP in one unit
+    public void incrementCurrentHP () {
+    	this.currentHP += 1;
+    }
+    
+    //Increment current HP in x units
+    public void incrementCurrentHP (int x) {
+    	this.currentHP += x;
+    }
 
     // Imunity counter getter
     public int getImunityCounter () {
@@ -172,13 +187,13 @@ public class Player {
     }
 
     // Buffed getter
-    public boolean getBuffed () {
-        return this.buffed;
+    public int getBuffCounter () {
+        return this.buffCounter;
     }
 
     // Buffed setter
-    public void setBuffed (boolean buffed) {
-        this.buffed = buffed;
+    public void setBuffCounter (int buffCounter) {
+        this.buffCounter = buffCounter;
     }
 
     // Specific image getter
@@ -205,6 +220,10 @@ public class Player {
         this.imunityCounter += 1;
         if (this.imunityCounter < 100 && (this.imunityCounter / 8) % 2 == 0) {
             frame = 4;
+        }
+        
+        if (buffCounter < 100) {
+            this.buffCounter += 1;
         }
 
         graphics.drawImage(this.getImage(frame), this.getX(), this.getY(), null);
