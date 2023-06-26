@@ -1,6 +1,5 @@
 
-public interface Consumable {
+public interface Consumable extends Entity{
 	public void fortify (Player player);
-	
-    public boolean checkCollision (int x, int y, int width, int height);
+
 }

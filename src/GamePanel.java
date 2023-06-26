@@ -336,6 +336,11 @@ public class GamePanel extends JPanel implements ActionListener {
             enemy.move(player);
             enemy.drawOnScreen(graphics);
         }
+        
+        //Draw each fruit
+        for (Consumable consumable : consumables) {
+        	consumable.drawOnScreen(graphics);
+        }
 
         player.move();
         player.drawOnScreen(graphics);
