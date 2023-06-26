@@ -5,5 +5,10 @@ public class Apple extends Fruit {
 		super(x, y);
 		this.loadImage("/src/images/fruits/apple.png", 0);
 	}
+	
+	public void fortify (Player player) {
+		player.incrementCurrentHP();
+	}
+
 
 }

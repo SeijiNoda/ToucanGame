@@ -6,5 +6,9 @@ public class Banana extends Fruit {
 		this.loadImage("/src/images/fruits/banana.png", 0);
 	}
 
+	@Override
+	public void fortify(Player player) {
+		player.setBuffCounter(0);
+	}
 
 }

@@ -3,7 +3,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-public abstract class Fruit implements Entity {
+public abstract class Fruit implements Entity, Consumable{
     private int x;
     private int y;
     
@@ -69,5 +69,7 @@ public abstract class Fruit implements Entity {
 		graphics.drawImage(this.getImage(), this.getX(), this.getY(), null);
 
 	}
+	
+	public abstract void fortify (Player player);
     
 }
