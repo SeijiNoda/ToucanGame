@@ -1,10 +1,10 @@
-package gameObjects.fruit;
+package gameobjects.fruit;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
-import gameObjects.Consumable;
-import gameObjects.Entity;
+import gameobjects.Consumable;
+import gameobjects.Entity;
 import player.Player;
 
 public abstract class Fruit implements Entity, Consumable{

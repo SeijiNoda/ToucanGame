@@ -1,11 +1,11 @@
-package gameObjects.fruit;
+package gameobjects.fruit;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
-import gameObjects.Consumable;
-import gameObjects.Entity;
+import gameobjects.Consumable;
+import gameobjects.Entity;
 import player.Player;
 
 public class Basket implements Entity, Consumable{

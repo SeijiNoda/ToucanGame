@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import directions.Directions;
-import gameObjects.Consumable;
-import gameObjects.enemy.Enemy;
-import gameObjects.enemy.BlueEnemy;
-import gameObjects.enemy.RedEnemy;
-import gameObjects.fruit.Apple;
-import gameObjects.fruit.Banana;
-import gameObjects.fruit.Blueberry;
-import gameObjects.fruit.Basket;
+import gameobjects.Consumable;
+import gameobjects.enemy.Enemy;
+import gameobjects.enemy.BlueEnemy;
+import gameobjects.enemy.RedEnemy;
+import gameobjects.fruit.Apple;
+import gameobjects.fruit.Banana;
+import gameobjects.fruit.Blueberry;
+import gameobjects.fruit.Basket;
 import player.Player;
 import score.Score;
 

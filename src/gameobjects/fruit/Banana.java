@@ -1,4 +1,4 @@
-package gameObjects.fruit;
+package gameobjects.fruit;
 
 import player.Player;
 

@@ -1,4 +1,4 @@
-package gameObjects.enemy;
+package gameobjects.enemy;
 
 import java.awt.Graphics;
 
