@@ -4,10 +4,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import gameObjects.Consumable;
-import gameObjects.Entity;
 import player.Player;
 
-public abstract class Fruit implements Entity, Consumable{
+public abstract class Fruit implements Consumable{
     private int x;
     private int y;
     private static int width;

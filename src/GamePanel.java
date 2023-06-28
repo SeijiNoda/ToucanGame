@@ -53,6 +53,8 @@ public class GamePanel extends JPanel implements ActionListener {
     private static int redEnemiesCounter = 0;
     private static int fruitsCounter = 0;
 
+    private static int collectedFruitCounter = 0;
+
     GamePanel() {
         this.generator = new Random(); 
         
@@ -257,6 +259,8 @@ public class GamePanel extends JPanel implements ActionListener {
         if (!this.running) {
             gameOver(graphics);
             return;
+        } else {
+            scoreMultiplier = (int) score / 15000;
         }
 
         // Key pressed map to turn more dynamic the player's movement
@@ -343,7 +347,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         
         //Draw each fruit
-        for (Consumable consumable : consumables) {
+        for (Consumable consumable: consumables) {
         	consumable.drawOnScreen(graphics);
         }
 
@@ -359,7 +363,8 @@ public class GamePanel extends JPanel implements ActionListener {
         // Fruits text
         graphics.setFont(new Font("Ink Free", Font.BOLD, 20));
         this.metrics = getFontMetrics(graphics.getFont());
-        graphics.drawString("Fruits:", (screenWidth - metrics.stringWidth("Fruits: ") - 4), 24);
+        String collectedFruits = "Fruits: " + collectedFruitCounter;
+        graphics.drawString(collectedFruits, (screenWidth - metrics.stringWidth(collectedFruits) - 4), 24);
 
         // Multiplier text
         graphics.setFont(new Font("Ink Free", Font.BOLD, 30));
@@ -488,14 +493,14 @@ public class GamePanel extends JPanel implements ActionListener {
         	}
         	
         	boolean collided = consumable.checkCollision(
-                    player.getX(), player.getY(), player.getWidth(), player.getHeight()
+                player.getX(), player.getY(), player.getWidth(), player.getHeight()
         	);
         	
         	if (collided) {
-            	//Fortifies the player and removes the fruit
+            	// Fortifies the player and removes the fruit
         		consumable.fortify(player);
         		consumables.remove(consumable);
-        		break;
+                collectedFruitCounter += 1;
         	}
         }
     }

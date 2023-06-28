@@ -5,10 +5,9 @@ import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import gameObjects.Consumable;
-import gameObjects.Entity;
 import player.Player;
 
-public class Basket implements Entity, Consumable{
+public class Basket implements Consumable{
 	private int x;
     private int y;
     private static int width;
